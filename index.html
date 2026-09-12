@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+<title>ZAYROX SENSITIVITY LAB — Free Fire Device & Sensitivity Optimizer</title>
+<meta name="description" content="Professional Free Fire sensitivity generator and device optimization lab. Analyze your device and generate an optimized sensitivity profile.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎯</text></svg>">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ===================== NAV ===================== -->
+<header class="navbar">
+  <div class="nav-inner">
+    <div class="logo">
+      <span class="logo-mark">⚡</span>
+      <span class="logo-text">ZAYROX<span class="logo-accent">LAB</span></span>
+    </div>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">☰</button>
+    <nav class="nav-links" id="navLinks">
+      <a href="#device-input">Device</a>
+      <a href="#generator">Generator</a>
+      <a href="#profile-output">Profile</a>
+      <a href="#diagnostics">Diagnostics</a>
+      <a href="#training">Training</a>
+      <a href="#lab-ai">Lab AI</a>
+      <a href="#saved-profiles">Saved</a>
+    </nav>
+  </div>
+</header>
+
+<!-- ===================== HERO ===================== -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="badge-pill">FREE FIRE OPTIMIZATION ENGINE</div>
+    <h1>ZAYROX <span class="grad-text">SENSITIVITY LAB</span></h1>
+    <p class="hero-sub">Enter your device → get a calculated, weighted, deterministic sensitivity profile optimized for headshot consistency, recoil control, tracking and range performance.</p>
+    <div class="hero-flow">
+      <div class="flow-step"><span>1</span>DEVICE</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step"><span>2</span>ANALYZE</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step"><span>3</span>GENERATE</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step"><span>4</span>TEST</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step"><span>5</span>OPTIMIZE</div>
+    </div>
+    <a href="#device-input" class="btn btn-primary btn-lg">Start Analysis ↓</a>
+  </div>
+</section>
+
+<main class="container">
+
+  <!-- ===================== DEVICE INPUT ===================== -->
+  <section id="device-input" class="section">
+    <h2 class="section-title">📱 Device Input</h2>
+    <p class="section-desc">Enter your device details. Unknown specs will be clearly marked as estimated.</p>
+    <div class="card form-card">
+      <div class="form-grid">
+        <div class="form-group">
+          <label for="deviceNameInput">Device Name</label>
+          <input type="text" id="deviceNameInput" placeholder="e.g. Redmi A5" list="deviceSuggestions">
+          <datalist id="deviceSuggestions"></datalist>
+        </div>
+        <div class="form-group">
+          <label for="ramSelect">RAM</label>
+          <select id="ramSelect">
+            <option value="2">2 GB</option>
+            <option value="3">3 GB</option>
+            <option value="4" selected>4 GB</option>
+            <option value="6">6 GB</option>
+            <option value="8">8 GB</option>
+            <option value="12">12 GB</option>
+            <option value="16">16 GB</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="storageSelect">Storage</label>
+          <select id="storageSelect">
+            <option value="32">32 GB</option>
+            <option value="64" selected>64 GB</option>
+            <option value="128">128 GB</option>
+            <option value="256">256 GB</option>
+            <option value="512">512 GB</option>
+          </select>
+        </div>
+      </div>
+      <button id="analyzeBtn" class="btn btn-primary btn-block">🔍 Analyze Device</button>
+    </div>
+  </section>
+
+  <!-- ===================== DEVICE ANALYZER ===================== -->
+  <section id="device-analyzer" class="section hidden-until-ready">
+    <h2 class="section-title">🧠 Device Analyzer</h2>
+    <div class="card" id="deviceResultCard">
+      <div class="perf-score-row">
+        <div>
+          <div class="perf-label">DEVICE PERFORMANCE</div>
+          <div class="bar-track"><div class="bar-fill" id="perfScoreBar" style="width:0%"></div></div>
+        </div>
+        <div class="perf-score-num"><span id="perfScoreText">0</span>/100</div>
+      </div>
+      <div class="tier-row">
+        <span class="tier-label">Performance Tier:</span>
+        <span class="tier-badge" id="perfTierBadge">-</span>
+      </div>
+      <div class="spec-grid">
+        <div class="spec-item"><span>Chipset</span><strong id="specChipset">-</strong></div>
+        <div class="spec-item"><span>GPU</span><strong id="specGpu">-</strong></div>
+        <div class="spec-item"><span>Android</span><strong id="specAndroid">-</strong></div>
+        <div class="spec-item"><span>Screen</span><strong id="specScreen">-</strong></div>
+        <div class="spec-item"><span>Refresh Rate</span><strong id="specRefresh">-</strong></div>
+        <div class="spec-item"><span>RAM / Storage</span><strong id="specRamStorage">-</strong></div>
+      </div>
+      <p class="note-text" id="deviceVerifiedNote"></p>
+    </div>
+  </section>
+
+  <!-- ===================== SENSITIVITY GENERATOR ===================== -->
+  <section id="generator" class="section hidden-until-ready">
+    <h2 class="section-title">⚙️ Sensitivity Generator</h2>
+    <div class="card form-card">
+      <div class="form-grid">
+        <div class="form-group">
+          <label for="playstyleSelect">Playstyle</label>
+          <select id="playstyleSelect">
+            <option value="balanced">Balanced</option>
+            <option value="aggressive">Aggressive</option>
+            <option value="oneTap">One-Tap</option>
+            <option value="dragHeadshot">Drag Headshot</option>
+            <option value="closeRange">Close Range</option>
+            <option value="midRange">Mid Range</option>
+            <option value="longRange">Long Range</option>
+            <option value="recoilControl">Recoil Control</option>
+            <option value="movement">Movement</option>
+            <option value="custom">Custom</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="rangeSelect">Range Focus</label>
+          <select id="rangeSelect">
+            <option value="balanced">Balanced</option>
+            <option value="close">Close Range</option>
+            <option value="mid">Mid Range</option>
+            <option value="long">Long Range</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="weaponSelect">Primary Weapon</label>
+          <select id="weaponSelect">
+            <optgroup label="Assault Rifle">
+              <option value="AUG">AUG</option>
+              <option value="SCAR">SCAR</option>
+              <option value="AK47">AK47</option>
+              <option value="PARAFAL">PARAFAL</option>
+            </optgroup>
+            <optgroup label="Sniper / Marksman">
+              <option value="Woodpecker">Woodpecker</option>
+              <option value="AWM">AWM</option>
+              <option value="M82B">M82B</option>
+            </optgroup>
+            <optgroup label="SMG">
+              <option value="MP40">MP40</option>
+              <option value="UMP">UMP</option>
+              <option value="MP5">MP5</option>
+            </optgroup>
+            <optgroup label="Shotgun">
+              <option value="M1887">M1887</option>
+              <option value="M1014">M1014</option>
+            </optgroup>
+          </select>
+        </div>
+      </div>
+
+      <div class="dpi-box">
+        <div class="dpi-fixed-row">
+          <span>DPI (Fixed Default)</span>
+          <strong id="dpiDisplay">480</strong>
+        </div>
+        <label class="switch-row">
+          <input type="checkbox" id="dpiModeToggle">
+          <span>Enable Experimental Custom DPI Mode</span>
+        </label>
+        <div class="form-group hidden-el" id="customDpiGroup">
+          <label for="customDpiInput">Custom DPI (Experimental)</label>
+          <input type="number" id="customDpiInput" min="100" max="1200" value="480">
+        </div>
+      </div>
+
+      <button id="generateBtn" class="btn btn-primary btn-block">⚡ Generate Sensitivity Profile</button>
+    </div>
+  </section>
+
+  <!-- ===================== GENERATED PROFILE ===================== -->
+  <section id="profile-output" class="section hidden-until-ready">
+    <h2 class="section-title">🎯 Generated Profile</h2>
+
+    <div class="sens-grid" id="sensGrid">
+      <div class="sens-card"><span>General</span><strong id="valGeneral">0</strong><button class="copy-btn" data-copy="valGeneral">Copy</button></div>
+      <div class="sens-card"><span>Red Dot</span><strong id="valRedDot">0</strong><button class="copy-btn" data-copy="valRedDot">Copy</button></div>
+      <div class="sens-card"><span>2X Scope</span><strong id="valX2">0</strong><button class="copy-btn" data-copy="valX2">Copy</button></div>
+      <div class="sens-card"><span>4X Scope</span><strong id="valX4">0</strong><button class="copy-btn" data-copy="valX4">Copy</button></div>
+      <div class="sens-card"><span>Sniper Scope</span><strong id="valSniper">0</strong><button class="copy-btn" data-copy="valSniper">Copy</button></div>
+      <div class="sens-card"><span>Free Look</span><strong id="valFreeLook">0</strong><button class="copy-btn" data-copy="valFreeLook">Copy</button></div>
+    </div>
+
+    <div class="card fire-dpi-row">
+      <div class="fb-block">
+        <h3>🔘 Fire Button</h3>
+        <div class="fb-value"><span id="valFireButton">0</span>%</div>
+        <p class="note-text" id="fireButtonExplanation"></p>
+        <button class="copy-btn" data-copy="valFireButton" data-suffix="%">Copy</button>
+      </div>
+      <div class="fb-block">
+        <h3>📡 DPI</h3>
+        <div class="fb-value"><span id="valDpi">480</span></div>
+        <p class="note-text">Main profile is calibrated around this DPI value.</p>
+      </div>
+    </div>
+
+    <button id="copyAllBtn" class="btn btn-secondary btn-block">📋 Copy All Settings</button>
+
+    <!-- SCORE -->
+    <div class="card score-card">
+      <div class="overall-score-row">
+        <span>OVERALL OPTIMIZATION SCORE</span>
+        <strong id="scoreOverallText">0/100</strong>
+      </div>
+      <div class="bar-track lg"><div class="bar-fill" id="scoreOverallBar" style="width:0%"></div></div>
+
+      <div class="score-list" id="scoreList">
+        <!-- filled by JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== WEAPON OPTIMIZATION ===================== -->
+  <section id="weapon-optimization" class="section hidden-until-ready">
+    <h2 class="section-title">🔫 Weapon Optimization</h2>
+    <div class="card">
+      <p id="weaponBehaviorText" class="note-text">Generate a profile first to see weapon-specific behavior notes.</p>
+    </div>
+  </section>
+
+  <!-- ===================== DIAGNOSTICS ===================== -->
+  <section id="diagnostics" class="section">
+    <h2 class="section-title">🩺 Sensitivity Diagnostics</h2>
+    <div class="card">
+      <p class="section-desc">Select the issues you're experiencing:</p>
+      <div class="checkbox-grid" id="diagnosticsForm">
+        <label><input type="checkbox" value="overshoot"> Overshoot</label>
+        <label><input type="checkbox" value="undershoot"> Undershoot</label>
+        <label><input type="checkbox" value="highRecoil"> High Recoil</label>
+        <label><input type="checkbox" value="lowRecoilControl"> Low Recoil Control</label>
+        <label><input type="checkbox" value="slowDrag"> Slow Drag</label>
+        <label><input type="checkbox" value="excessiveDrag"> Excessive Drag</label>
+        <label><input type="checkbox" value="aimAboveHead"> Aim Going Above Head</label>
+        <label><input type="checkbox" value="aimStickingBody"> Aim Sticking to Body</label>
+        <label><input type="checkbox" value="poorMovingTracking"> Poor Moving-Target Tracking</label>
+        <label><input type="checkbox" value="longRangeInstability"> Long-Range Instability</label>
+        <label><input type="checkbox" value="closeRangeInstability"> Close-Range Instability</label>
+        <label><input type="checkbox" value="scopeInstability"> Scope Instability</label>
+      </div>
+      <button id="runDiagnosticsBtn" class="btn btn-primary btn-block">Run Diagnostics</button>
+      <div id="diagnosticsResults" class="diag-results"></div>
+    </div>
+  </section>
+
+  <!-- ===================== TRAINING MODE ===================== -->
+  <section id="training" class="section">
+    <h2 class="section-title">🏋️ Training / Calibration Mode</h2>
+    <div class="card">
+      <div class="form-group">
+        <label for="trainingProblemSelect">Select Problem</label>
+        <select id="trainingProblemSelect">
+          <option value="bodyShots">Body Shots</option>
+          <option value="overshoot">Overshoot</option>
+          <option value="undershoot">Undershoot</option>
+          <option value="recoil">Recoil</option>
+          <option value="movingTargets">Moving Targets</option>
+          <option value="longRange">Long Range</option>
+          <option value="closeRange">Close Range</option>
+        </select>
+      </div>
+      <div class="training-info">
+        <div><span>Current General:</span><strong id="trainingCurrentGeneral">-</strong></div>
+        <div><span>Recommended Test:</span><strong id="trainingAdjustment">-</strong></div>
+        <div><span>Test Value:</span><strong id="trainingTestValue">-</strong></div>
+      </div>
+      <p class="note-text" id="trainingTip"></p>
+      <div class="btn-row">
+        <button id="applyTrainingBtn" class="btn btn-primary">Apply</button>
+        <button id="resetTrainingBtn" class="btn btn-secondary">Reset</button>
+        <button id="saveTrainingBtn" class="btn btn-secondary">Save Profile</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== DEVICE SETTINGS ===================== -->
+  <section id="device-settings" class="section">
+    <h2 class="section-title">📲 Device Optimization</h2>
+    <div class="card">
+      <ul class="tag-list" id="deviceSettingsList"></ul>
+    </div>
+  </section>
+
+  <!-- ===================== DEVELOPER OPTIONS ===================== -->
+  <section id="developer-options" class="section">
+    <h2 class="section-title">🛠️ Developer Options</h2>
+    <div class="card">
+      <p class="note-text">Availability depends on your Android version/device manufacturer. Only change settings you understand.</p>
+      <ul class="tag-list" id="devOptionsList"></ul>
+    </div>
+  </section>
+
+  <!-- ===================== GAME VERSION ===================== -->
+  <section id="game-version" class="section">
+    <h2 class="section-title">🕹️ Game Version</h2>
+    <div class="card">
+      <div class="version-row"><span>Current Profile</span><strong id="gameVersionCurrent">-</strong></div>
+      <div class="version-row"><span>Last Updated</span><strong id="gameVersionDate">-</strong></div>
+      <div class="version-row"><span>Profile Revision</span><strong id="gameVersionRevision">-</strong></div>
+      <p class="note-text" id="gameVersionNotes"></p>
+      <p class="note-text">⚠️ This is a static site — version data is manually maintained (see README) unless a secure external API is connected.</p>
+    </div>
+  </section>
+
+  <!-- ===================== LAB AI ===================== -->
+  <section id="lab-ai" class="section">
+    <h2 class="section-title">🤖 LAB AI Assistant</h2>
+    <div class="card ai-card">
+      <div class="ai-window" id="aiChatWindow">
+        <div class="ai-msg ai-bot">Hi! I'm LAB AI. Ask me anything about Free Fire sensitivity, recoil, or aim issues.</div>
+      </div>
+      <div class="ai-suggestions" id="aiSuggestions">
+        <button class="chip">Why am I getting body shots?</button>
+        <button class="chip">Why does my AK recoil so much?</button>
+        <button class="chip">Best settings for close range?</button>
+        <button class="chip">Aim goes above head, why?</button>
+      </div>
+      <div class="ai-input-row">
+        <input type="text" id="aiInput" placeholder="Ask LAB AI something...">
+        <button id="aiSendBtn" class="btn btn-primary">Send</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== SAVED PROFILES ===================== -->
+  <section id="saved-profiles" class="section">
+    <h2 class="section-title">💾 Saved Profiles</h2>
+    <div class="card">
+      <div class="btn-row">
+        <button id="saveProfileBtn" class="btn btn-primary">Save Current Profile</button>
+        <button id="exportProfileBtn" class="btn btn-secondary">Export JSON</button>
+        <label class="btn btn-secondary file-label">Import JSON
+          <input type="file" id="importProfileInput" accept=".json" hidden>
+        </label>
+        <button id="resetAllBtn" class="btn btn-danger">Reset All</button>
+      </div>
+      <ul class="saved-list" id="savedProfilesList"></ul>
+    </div>
+  </section>
+
+  <!-- ===================== ABOUT ===================== -->
+  <section id="about" class="section">
+    <h2 class="section-title">ℹ️ About / Disclaimer</h2>
+    <div class="card">
+      <p class="note-text">ZAYROX SENSITIVITY LAB is an independent optimization utility. It is not affiliated with Garena Free Fire. All generated values are calculated estimates based on device data and user input — they are optimization suggestions, not guarantees of in-game performance (e.g. no guaranteed headshot %, no aimlock, no zero-recoil claims). This tool does not modify game files, does not request account credentials/OTP, and does not provide cheats or exploits.</p>
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <p>ZAYROX SENSITIVITY LAB — Built for the community. Not affiliated with Garena.</p>
+</footer>
+
+<div class="toast" id="toast"></div>
+
+<!-- DATA -->
+<script src="data/devices.js" defer></script>
+<script src="data/gameVersions.js" defer></script>
+<script src="data/sensitivityProfiles.js" defer></script>
+<!-- MODULES -->
+<script src="js/utils.js" defer></script>
+<script src="js/deviceAnalyzer.js" defer></script>
+<script src="js/sensitivityEngine.js" defer></script>
+<script src="js/diagnostics.js" defer></script>
+<script src="js/aiAssistant.js" defer></script>
+<script src="js/profileManager.js" defer></script>
+<!-- MAIN -->
+<script src="script.js" defer></script>
+</body>
+</html>
